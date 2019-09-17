@@ -29,16 +29,26 @@ class Subject
      * @ORM\Column(type="string") 
      */
     protected $icon;
-
+/*
     public function __construct()
     {
         parent::__construct();
         // your own logic
     }
-
+*/
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     public function getDescription()
