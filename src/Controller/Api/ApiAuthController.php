@@ -20,10 +20,14 @@ class ApiAuthController extends AbstractController
      */
     public function register(Request $request, UserManagerInterface $userManager)
     {
+        
         $data = json_decode(
             $request->getContent(),
             true
-        );        $validator = Validation::createValidator();        $constraint = new Assert\Collection(array(
+        );        
+
+            $validator = Validation::createValidator();        
+            $constraint = new Assert\Collection(array(
             // the keys correspond to the keys in the input array
             'username' => new Assert\Length(array('min' => 1)),
             'password' => new Assert\Length(array('min' => 1)),
@@ -32,7 +36,8 @@ class ApiAuthController extends AbstractController
             return new JsonResponse(["error" => (string)$violations], 500);
         }        $username = $data['username'];
         $password = $data['password'];
-        $email = $data['email'];        $user = new User();        $user
+        $email = $data['email'];        $user = new User();        
+        $user
             ->setUsername($username)
             ->setPlainPassword($password)
             ->setEmail($email)
