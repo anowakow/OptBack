@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="Course")
  */
-class Course
+class Topic
 {
     /**
      * @ORM\Id
@@ -31,9 +31,9 @@ class Course
     protected $icon;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Subject")
+     * @ORM\ManyToOne(targetEntity="Course")
      */
-    protected $subject;
+    protected $course;
 
     public function getId()
     {
@@ -69,13 +69,13 @@ class Course
         $this->icon = $icon;
     }
 
-    public function getSubject()
+    public function getCourse()
     {
-        return $this->subject;
+        return $this->course;
     }
 
-    public function setSubject($subject)
+    public function setCourse($course)
     {
-        $this->subject = $subject;
+        $this->course = $course;
     }
 }
