@@ -40,7 +40,7 @@ class CourseController extends FOSRestController
     }
 
    /**
-     * @Route("/addCourse", name="add_curse",  methods={"POST"})
+     * @Route("/addCourse", name="add_course",  methods={"POST"})
      * @param Request $request
      * @param UserManagerInterface $userManager
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -57,7 +57,7 @@ class CourseController extends FOSRestController
     
     $subject_repository = $this->getDoctrine()->getRepository(Subject::class);
     $subject = $subject_repository ->findOneBy(array('id' => $subject_id));
-    print_r($subject);
+    //int_r($subject);
     $course->setName($name);
     $course->setDescription($description);
     $course->setIcon($icon);

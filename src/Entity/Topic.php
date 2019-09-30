@@ -1,10 +1,10 @@
 <?php
 namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Entity\Course;
 /**
  * @ORM\Entity
- * @ORM\Table(name="Course")
+ * @ORM\Table(name="Topic")
  */
 class Topic
 {
@@ -34,6 +34,11 @@ class Topic
      * @ORM\ManyToOne(targetEntity="Course")
      */
     protected $course;
+
+   /** 
+     * @ORM\Column(type="boolean") 
+     */
+    protected $active;
 
     public function getId()
     {
@@ -77,5 +82,15 @@ class Topic
     public function setCourse($course)
     {
         $this->course = $course;
+    }
+
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 }
