@@ -4,6 +4,8 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Entity\Subject;
+use App\Entity\Topic;
+use App\Entity\Course;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,56 +22,70 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\RestBundle\View\View;
 
-class SubjectController extends FOSRestController
+class TheoryController extends FOSRestController
 {
     /**
-     * @Route("/allActiveSubjects", name="all_active_subjects",  methods={"GET"})
+     * @Route("/allTheory", name="all_theory_pages",  methods={"GET"})
      * @param Request $request
      * @param UserManagerInterface $userManager
-     * 
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function allActiveSubjects(Request $request, UserManagerInterface $userManager)
+    public function allTopics(Request $request, UserManagerInterface $userManager)
     {
-        $repository = $this->getDoctrine()->getRepository(Subject::class);
-        $subjects = $repository->findall();
-        return $this->handleView($this->view($subjects));
+        
+        $repository = $this->getDoctrine()->getRepository(Topic::class);
+        $topics = $repository->findall();
+        return $this->handleView($this->view($topics));
     }
 
    /**
-     * @Route("/allSubjects", name="all_subjects",  methods={"GET"})
+     * @Route("/allActiveTopics", name="all_active_topics",  methods={"GET"})
      * @param Request $request
      * @param UserManagerInterface $userManager
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-  public function getAllSubjectsAction(Request $request, UserManagerInterface $userManager)
+  public function getAllActiveTopicAction(Request $request, UserManagerInterface $userManager)
   {
-    $repository = $this->getDoctrine()->getRepository(Subject::class);
-    $subjects = $repository->findall();
-    return $this->handleView($this->view($subjects));
+    $em = $this->getDoctrine()->getManager();
+    $dql = "SELECT t FROM App\Entity\Topic t where t.active = 1";
+    $query = $em->createQuery($dql);
+    $topics = $query->getResult();
+    
+    return $this->handleView($this->view($topics));
   }
 
    /**
-     * @Route("/addSubject", name="add_subject",  methods={"POST"})
+     * @Route("/addTopic", name="add_topic",  methods={"POST"})
      * @param Request $request
      * @param UserManagerInterface $userManager
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-  public function addSubjectAction(Request $request, UserManagerInterface $userManager)
+  public function addTopicAction(Request $request, UserManagerInterface $userManager)
   {
-    $subject = new Subject();
+    $em = $this->getDoctrine()->getManager();
+    $topic = new Topic();
     // $form = $this->createForm(MovieType::class, $movie);
     $data = json_decode($request->getContent(), true);
+    print_r($data);
     $name = $data["name"];
     $description = $data["description"];
     $icon = $data["icon"];
-    $subject->setName($name);
-    $subject->setDescription($description);
-    $subject->setIcon($icon);
+    $course_id = $data["course_id"];
+    $active = $data["active"];
+    //$course = $em->find("Course", $courseId);
+    $course_repository = $this->getDoctrine()->getRepository(Course::class);
+    $course = $course_repository ->findOneBy(array('id' => $course_id));
+
+     
+    $topic->setName($name);
+    $topic->setDescription($description);
+    $topic->setIcon($icon);
+    $topic->setActive($active);
+    $topic->setCourse($course);
     //$form->submit($data);
    // if ($form->isSubmitted() && $form->isValid()) {
-    $em = $this->getDoctrine()->getManager();
-    $em->persist($subject);
+    
+    $em->persist($topic);
     $em->flush();
       return $this->handleView($this->view(['status' => 'ok'], Response::HTTP_CREATED));
     //}

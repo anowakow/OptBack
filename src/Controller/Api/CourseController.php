@@ -35,6 +35,8 @@ class CourseController extends FOSRestController
     public function allActiveSubjects(Request $request, UserManagerInterface $userManager, $subject_id)
     {
         $repository = $this->getDoctrine()->getRepository(Subject::class);
+        $subject = $repository->findBy(array('subject' => $subject_id));
+    //int_r($subject);
         $subjects = $repository->findall();
         return $this->handleView($this->view($subjects));
     }

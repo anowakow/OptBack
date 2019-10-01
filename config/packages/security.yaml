@@ -23,6 +23,8 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/addSubject, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/allCourses/{subject_id}, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/allActiveCourses/{subject_id}, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/addCourse, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/addTopic, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/allTopics, role: IS_AUTHENTICATED_ANONYMOUSLY }
