@@ -24,22 +24,44 @@ use FOS\RestBundle\View\View;
 class CourseController extends FOSRestController
 {
     /**
-     * @Route("/allCourses/{subject_id}", name="all_active_subjects",  methods={"GET"})
+     * @Route("/allActiveCourses/{subject_id}", name="all_active_courses",requirements={"subject_id": "\d+"},  methods={"GET"})
      * @param Request $request
      * @param UserManagerInterface $userManager
-     * requirements={
-     *         "subjectId": "\d+",
-     *     }
+     * 
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function allActiveSubjects(Request $request, UserManagerInterface $userManager, $subject_id)
+    public function allActiveCourses(Request $request, UserManagerInterface $userManager, $subject_id)
     {
-        $repository = $this->getDoctrine()->getRepository(Subject::class);
-        $subject = $repository->findBy(array('subject' => $subject_id));
-    //int_r($subject);
-        $subjects = $repository->findall();
-        return $this->handleView($this->view($subjects));
+        //print("SUBJECT ID");
+        //print_r($subject_id);
+        $subjectRepo = $this->getDoctrine()->getRepository(Subject::class);
+        $subject = $subjectRepo -> findBy(array('id' => $subject_id ));
+        //print_r($subject);
+        $repository = $this->getDoctrine()->getRepository(Course::class);
+        $courses = $repository->findBy(array('subject' => $subject,'active' => 1 ));
+      
+        return $this->handleView($this->view($courses));
     }
+
+    /**
+     * @Route("/allCourses/{subject_id}", name="all_courses",requirements={"subject_id": "\d+"},  methods={"GET"})
+     * @param Request $request
+     * @param UserManagerInterface $userManager
+     * 
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function allCourses(Request $request, UserManagerInterface $userManager, $subject_id)
+    {
+        
+        $subjectRepo = $this->getDoctrine()->getRepository(Subject::class);
+        $subject = $subjectRepo -> findBy(array('id' => $subject_id ));
+        //print_r($subject);
+        $repository = $this->getDoctrine()->getRepository(Course::class);
+        $courses = $repository->findBy(array('subject' => $subject,'active' => 1 ));
+      
+        return $this->handleView($this->view($courses));
+    }
+
 
    /**
      * @Route("/addCourse", name="add_course",  methods={"POST"})

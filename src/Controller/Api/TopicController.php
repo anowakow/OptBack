@@ -25,34 +25,43 @@ use FOS\RestBundle\View\View;
 class TopicController extends FOSRestController
 {
     /**
-     * @Route("/allTopics", name="all_topics",  methods={"GET"})
+     * @Route("/allTopics/{course_id}", name="all_topics", requirements={"course_id": "\d+"},  methods={"GET"})
      * @param Request $request
      * @param UserManagerInterface $userManager
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function allTopics(Request $request, UserManagerInterface $userManager)
+    public function allTopics(Request $request, UserManagerInterface $userManager,$course_id)
     {
         
-        $repository = $this->getDoctrine()->getRepository(Topic::class);
-        $topics = $repository->findall();
-        return $this->handleView($this->view($topics));
+         
+      $courseRepo = $this->getDoctrine()->getRepository(Course::class);
+      $course = $courseRepo -> findBy(array('id' => $course_id ));
+      //print_r($subject);
+      $repository = $this->getDoctrine()->getRepository(Topic::class);
+      $courses = $repository->findBy(array('course' => $course));
+    
+      return $this->handleView($this->view($courses));
     }
 
-   /**
-     * @Route("/allActiveTopics", name="all_active_topics",  methods={"GET"})
+/**
+     * @Route("/allActiveTopics/{course_id}", name="all_active_topics", requirements={"course_id": "\d+"},  methods={"GET"})
      * @param Request $request
      * @param UserManagerInterface $userManager
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-  public function getAllActiveTopicAction(Request $request, UserManagerInterface $userManager)
-  {
-    $em = $this->getDoctrine()->getManager();
-    $dql = "SELECT t FROM App\Entity\Topic t where t.active = 1";
-    $query = $em->createQuery($dql);
-    $topics = $query->getResult();
+    public function allActiveTopics(Request $request, UserManagerInterface $userManager,$course_id)
+    {
+        
+         
+      $courseRepo = $this->getDoctrine()->getRepository(Course::class);
+      $course = $courseRepo -> findBy(array('id' => $course_id ));
+      //print_r($subject);
+      $repository = $this->getDoctrine()->getRepository(Topic::class);
+      $courses = $repository->findBy(array('course' => $course,'active' => 1 ));
     
-    return $this->handleView($this->view($topics));
-  }
+      return $this->handleView($this->view($courses));
+    }
+
 
    /**
      * @Route("/addTopic", name="add_topic",  methods={"POST"})
@@ -66,7 +75,7 @@ class TopicController extends FOSRestController
     $topic = new Topic();
     // $form = $this->createForm(MovieType::class, $movie);
     $data = json_decode($request->getContent(), true);
-    print_r($data);
+    //print_r($data);
     $name = $data["name"];
     $description = $data["description"];
     $icon = $data["icon"];

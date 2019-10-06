@@ -35,6 +35,11 @@ class Course
      */
     protected $subject;
 
+     /**
+     * @ORM\Column(type="boolean", options={"default":"1"})
+     */
+    protected $active;
+
     public function getId()
     {
         return $this->id;
@@ -78,4 +83,16 @@ class Course
     {
         $this->subject = $subject;
     }
+
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
+
 }
