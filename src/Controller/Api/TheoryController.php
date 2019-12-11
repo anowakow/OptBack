@@ -60,7 +60,7 @@ class TheoryController extends FOSRestController
      * @param UserManagerInterface $userManager
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-  public function addTopicAction(Request $request, UserManagerInterface $userManager)
+  public function addTheoryAction(Request $request, UserManagerInterface $userManager)
   {
     $em = $this->getDoctrine()->getManager();
     $topic = new Topic();

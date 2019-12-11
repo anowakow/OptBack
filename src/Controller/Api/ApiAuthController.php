@@ -1,5 +1,6 @@
 <?php
-namespace App\Controller\Api;use FOS\UserBundle\Model\UserManagerInterface;
+namespace App\Controller\Api;
+use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,4 +51,5 @@ class ApiAuthController extends AbstractController
             return new JsonResponse(["error" => $e->getMessage()], 500);
         }        return new JsonResponse(["success" => $user->getUsername(). " has been registered!"], 200);
     }
+   
 }
