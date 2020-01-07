@@ -1,9 +1,10 @@
 <?php
 namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\SubjectRepository")
  * @ORM\Table(name="Subject")
  */
 class Subject 
@@ -29,6 +30,16 @@ class Subject
      * @ORM\Column(type="string") 
      */
     protected $icon;
+
+    /** 
+     * @ORM\Column(type="boolean") 
+     */
+    protected $active;
+
+    /** 
+     * @ORM\Column(type="boolean") 
+     */
+    protected $demo;
 /*
     public function __construct()
     {
@@ -69,5 +80,25 @@ class Subject
     public function setIcon($icon)
     {
         $this->icon = $icon;
+    }
+
+    public function isDemo()
+    {
+        return $this->demo;
+    }
+
+    public function setDemo($demo)
+    {
+        $this->demo = $demo;
+    }
+
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 }
